@@ -150,8 +150,55 @@ SELECT
     profit
 FROM levdb.raw_sales;
 
+4. Dicionário de Medidas (DAX)
+Abaixo estão listadas as principais métricas implementadas no Power BI para suporte à análise de negócio.
 
-4. Notas de Qualidade de Dados
+Nome da Medida
+Fórmula DAX
+
+Lucro Total
+SUM ( fact_sales[profit])
+
+Total Vendas
+SUM ( fact_sales[Sales] )
+
+Margem de Lucro
+DIVIDE ( [Lucro Total], [Total Vendas] )
+
+Número de Pedidos
+DISTINCTCOUNT ( fact_sales[order_id] )
+
+Quantidade Vendida
+SUM ( fact_sales[quantity])
+
+Percentual de Desconto
+AVERAGE ( fact_sales[discount] )
+
+Lucro com Prejuízo
+CALCULATE ( [Lucro Total], FILTER ( fact_sales, fact_sales[profit] < 0 ) )
+
+Vendas com Prejuízo
+CALCULATE ( [Total Vendas], FILTER ( fact_sales, fact_sales[profit] < 0 ) )
+
+Percentual Vendas com Prejuízo
+DIVIDE ( [Vendas com Prejuízo], [Total Vendas] )
+
+Margem Apenas Prejuízo
+DIVIDE ( [Lucro com Prejuízo], [Vendas com Prejuízo] )
+
+Rank Cliente por Lucro
+RANKX ( ALL ( dim_customer[customer_id] ), [Lucro Total], , DESC, DENSE )
+
+Rank Cliente por Vendas
+RANKX ( ALL ( dim_customer[customer_id] ), [Total Vendas], , DESC, DENSE )
+
+Lucro Total Top 10 Clientes
+IF ( [Rank Cliente por Lucro] <= 10, [Lucro Total], BLANK() )
+
+Total Vendas Top 10 Clientes
+IF ( [Rank Cliente por Vendas] <= 10, [Total Vendas] )
+
+5. Notas de Qualidade de Dados
 
 Conversão de Tipos: A coluna order_date foi convertida de String para Date para permitir inteligência de tempo no Power BI.
 
