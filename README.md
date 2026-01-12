@@ -159,7 +159,7 @@ SELECT
   [Expression]  AS [DAX],
   [Description] AS [Descricao]
 FROM
-  $SYSTEM.TMSCHEMA_MEASURES
+  SYSTEM.TMSCHEMA_MEASURES
 ORDER BY
   [Name]
   
