@@ -151,6 +151,18 @@ SELECT
 FROM levdb.raw_sales;
 
 4. Dicionário de Medidas (DAX)
+
+Query no DAX STUDIO:
+
+SELECT
+  [Name]        AS [Medida],
+  [Expression]  AS [DAX],
+  [Description] AS [Descricao]
+FROM
+  $SYSTEM.TMSCHEMA_MEASURES
+ORDER BY
+  [Name]
+  
 Abaixo estão listadas as principais métricas implementadas no Power BI para suporte à análise de negócio.
 
 Nome da Medida
