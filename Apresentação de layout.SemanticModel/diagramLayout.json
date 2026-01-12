@@ -1,0 +1,87 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 167.35135184649994,
+        "y": 10.399999618530273
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 50,
+            "y": 504.04275866552223
+          },
+          "nodeIndex": "dim_customer",
+          "nodeLineageTag": "a1e3142f-a26c-4a92-91aa-b71be750b397",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 275.95061767699247,
+            "y": -50
+          },
+          "nodeIndex": "dim_location",
+          "nodeLineageTag": "bba35b17-381b-4ebf-b035-c7db529a39b1",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 618.35135184649994,
+            "y": 371.06231256105139
+          },
+          "nodeIndex": "dim_product",
+          "nodeLineageTag": "5b71832a-9c98-4dd5-bc54-37b738f64de8",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 331.16465363599093,
+            "y": 315.212589692916
+          },
+          "nodeIndex": "fact_sales",
+          "nodeLineageTag": "d85108b2-a47c-4a2f-961f-8d0131fe8306",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 852.35135184649994,
+            "y": 301.02137933276111
+          },
+          "nodeIndex": "Medidas",
+          "nodeLineageTag": "4c7367e0-dd6a-41a0-ab93-1341e7f3c8cd",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Todas as tabelas",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "Todas as tabelas",
+  "defaultDiagram": "Todas as tabelas"
+}

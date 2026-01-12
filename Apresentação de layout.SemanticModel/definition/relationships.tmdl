@@ -1,0 +1,17 @@
+relationship 7a911d32-1f45-4304-874b-94fb199d2c4e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_sales.order_date
+	toColumn: LocalDateTable_96830c9c-82e5-4f98-9d48-cdebb34a7740.Date
+
+relationship AutoDetected_2f2c4c60-03a2-42d4-9d72-fc79584f7053
+	fromColumn: fact_sales.customer_id
+	toColumn: dim_customer.customer_id
+
+relationship AutoDetected_08a12502-9268-4992-a3e9-1f11ced132a5
+	fromColumn: fact_sales.postal_code
+	toColumn: dim_location.postal_code
+
+relationship AutoDetected_0467d702-c5e8-404f-9dfd-b714dc1e1303
+	fromColumn: fact_sales.product_id
+	toColumn: dim_product.product_id
+

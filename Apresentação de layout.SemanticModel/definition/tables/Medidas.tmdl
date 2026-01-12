@@ -1,0 +1,172 @@
+table Medidas
+	lineageTag: 4c7367e0-dd6a-41a0-ab93-1341e7f3c8cd
+
+	measure 'Lucro Total' =
+			
+			SUM ( fact_sales[profit])
+		lineageTag: 752528ee-7617-420c-9d9b-e96ba3afbdd6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Lucro com Prejuízo' =
+			
+			CALCULATE (
+			    [Lucro Total],
+			    FILTER ( fact_sales, fact_sales[profit] < 0 )
+			)
+		lineageTag: 332286af-f41b-43ab-87c6-7552756a67e4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Lucro Regional' = ```
+			
+			[Lucro Total]
+			
+			```
+		lineageTag: 54120e48-8004-445f-9415-40b99932c936
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Rank Cliente por Lucro' =
+			
+			RANKX (
+			    ALL ( dim_customer[customer_id] ),
+			    [Lucro Total],
+			    ,
+			    DESC,
+			    DENSE
+			)
+		lineageTag: 04bf281f-e55f-4d22-83cb-80947c9bc5eb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Vendas' =
+			
+			SUM ( fact_sales[Sales] )
+		formatString: "R$"\ #,0.0;-"R$"\ #,0.0;"R$"\ #,0.0
+		lineageTag: 783c9eb9-cd95-486e-b722-cb30b82d5ebf
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Total Vendas Categoria' = ```
+			
+			[Total Vendas]
+			
+			```
+		lineageTag: 4963133b-39f2-4452-9d86-a52d0f02eb33
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Vendas com Prejuízo' =
+			
+			CALCULATE (
+			    [Total Vendas],
+			    FILTER ( fact_sales, fact_sales[profit] < 0 )
+			)
+		lineageTag: 40500a7d-4a70-4591-b67b-8a316bf9cc3d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Rank Cliente por Vendas' = ```
+			
+			RANKX (
+			    ALL ( dim_customer[customer_id] ),
+			    [Total Vendas],
+			    ,
+			    DESC,
+			    DENSE
+			)
+			
+			```
+		formatString: 0
+		lineageTag: e7287550-7be7-4eb2-a80e-fb2511b97b95
+
+	measure 'Total Vendas Top 10 Clientes' =
+			
+			IF (
+			    [Rank Cliente por Vendas] <= 10,
+			    [Total Vendas]
+			)
+		lineageTag: c9a234d0-1da2-4b68-9c92-804f26aa23ef
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Quantidade Vendida' =
+			
+			SUM ( fact_sales[quantity])
+		formatString: 0
+		lineageTag: 09b2946f-a244-4ca0-836c-03867cfe36a3
+
+	measure 'Percentual Vendas com Prejuízo' =
+			
+			DIVIDE ( [Vendas com Prejuízo], [Total Vendas] )
+		lineageTag: baaee426-c22b-4d87-89d1-275b2dcd2620
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Percentual de Desconto' = ```
+			
+			AVERAGE ( fact_sales[discount] )
+			
+			```
+		lineageTag: 5d65da57-29d3-43d9-90eb-393df338f16f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Número de Pedidos' =
+			
+			DISTINCTCOUNT ( fact_sales[order_id] )
+		formatString: 0
+		lineageTag: 20698869-baa3-4da8-92e1-3841fbf85d01
+
+	measure 'Margem de Lucro Categoria' =
+			
+			[Margem de Lucro]
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 726d2294-abde-40f2-b574-f968ef102b27
+
+	measure 'Margem de Lucro' =
+			
+			DIVIDE ( [Lucro Total], [Total Vendas] )
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 922be1e4-476c-425b-8c50-1e6ecee0959b
+
+	measure 'Margem Apenas Prejuízo' =
+			
+			DIVIDE ( [Lucro com Prejuízo], [Vendas com Prejuízo] )
+		lineageTag: 7a6e00cb-382c-4af1-8b7f-557f9b58b629
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Lucro Total Top 10 Clientes' = ```
+			
+			IF (
+			    [Rank Cliente por Lucro] <= 10,
+			    [Lucro Total],
+			    BLANK()
+			)
+			
+			```
+		lineageTag: 101d40b4-44d1-4d58-9bdf-9df493b95a42
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Lucro Total Categoria' =
+			
+			[Lucro Total]
+		lineageTag: 046c7b5a-035a-41dd-a012-c4eb14c57491
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Medidas = m
+		mode: import
+		source =
+				let
+				    Fonte = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Coluna 1" = _t]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(Fonte,{{"Coluna 1", type text}}),
+				    #"Colunas Removidas" = Table.RemoveColumns(#"Tipo Alterado",{"Coluna 1"})
+				in
+				    #"Colunas Removidas"
+
+	annotation PBI_ResultType = Table
+

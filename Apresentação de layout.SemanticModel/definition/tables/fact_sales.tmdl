@@ -1,0 +1,108 @@
+table fact_sales
+	lineageTag: d85108b2-a47c-4a2f-961f-8d0131fe8306
+
+	column order_id
+		dataType: string
+		lineageTag: 14daed71-ce56-4ad1-92f4-2b865a714716
+		summarizeBy: none
+		sourceColumn: order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 25d8d090-3bb2-44c3-a660-32bde160b5e8
+		summarizeBy: none
+		sourceColumn: order_date
+
+		variation Variation
+			isDefault
+			relationship: 7a911d32-1f45-4304-874b-94fb199d2c4e
+			defaultHierarchy: LocalDateTable_96830c9c-82e5-4f98-9d48-cdebb34a7740.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column customer_id
+		dataType: string
+		lineageTag: 322aeb0b-e892-4171-8644-711ed5668735
+		summarizeBy: none
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_id
+		dataType: string
+		lineageTag: eadcef3b-c6bf-4faf-ad46-553ee98d92c3
+		summarizeBy: none
+		sourceColumn: product_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column postal_code
+		dataType: string
+		lineageTag: c44a059c-8954-4cc5-939b-0db8b28248a4
+		summarizeBy: none
+		sourceColumn: postal_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column sales
+		dataType: double
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		lineageTag: 49daacca-cb59-4fef-ba84-49e5a5c061c8
+		summarizeBy: sum
+		sourceColumn: sales
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: 89a14d94-03c2-44a1-b6e2-b624f6ad718b
+		summarizeBy: sum
+		sourceColumn: quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column discount
+		dataType: double
+		lineageTag: f2f5f93d-1f20-41b6-a74e-0985fdda8a39
+		summarizeBy: sum
+		sourceColumn: discount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column profit
+		dataType: double
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		lineageTag: 2cc036fb-5105-4db4-a6a6-bdeb9d90ce68
+		summarizeBy: sum
+		sourceColumn: profit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	partition fact_sales = m
+		mode: import
+		source =
+				let
+				    Fonte = Odbc.DataSource("dsn=lev", [HierarchicalNavigation=true]),
+				    AwsDataCatalog_Database = Fonte{[Name="AwsDataCatalog",Kind="Database"]}[Data],
+				    default_Schema = AwsDataCatalog_Database{[Name="default",Kind="Schema"]}[Data],
+				    fact_sales_Table = default_Schema{[Name="fact_sales",Kind="Table"]}[Data],
+				    #"Linhas Filtradas" = Table.SelectRows(fact_sales_Table, each [order_id] <> null)
+				in
+				    #"Linhas Filtradas"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Exception
+

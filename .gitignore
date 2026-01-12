@@ -1,0 +1,7 @@
+# Arquivos de usuário do Power BI
+*.user.json
+*.log
+.pbi/
+
+# Cache e metadados locais
+DataFlavorCache/

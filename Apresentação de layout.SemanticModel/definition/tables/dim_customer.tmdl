@@ -1,0 +1,42 @@
+table dim_customer
+	lineageTag: a1e3142f-a26c-4a92-91aa-b71be750b397
+
+	column customer_id
+		dataType: string
+		lineageTag: a2a21b7b-eeed-4173-94cc-5012cfe39502
+		summarizeBy: none
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_name
+		dataType: string
+		lineageTag: 7f615440-97b8-40c6-a1f6-feffacda8699
+		summarizeBy: none
+		sourceColumn: customer_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column segment
+		dataType: string
+		lineageTag: 98e7f519-3c85-46b6-942a-f64aef984576
+		summarizeBy: none
+		sourceColumn: segment
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_customer = m
+		mode: import
+		source =
+				let
+				    Fonte = Odbc.DataSource("dsn=lev", [HierarchicalNavigation=true]),
+				    AwsDataCatalog_Database = Fonte{[Name="AwsDataCatalog",Kind="Database"]}[Data],
+				    default_Schema = AwsDataCatalog_Database{[Name="default",Kind="Schema"]}[Data],
+				    dim_customer_Table = default_Schema{[Name="dim_customer",Kind="Table"]}[Data]
+				in
+				    dim_customer_Table
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Exception
+

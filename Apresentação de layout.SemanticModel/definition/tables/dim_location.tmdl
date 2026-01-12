@@ -1,0 +1,56 @@
+table dim_location
+	lineageTag: bba35b17-381b-4ebf-b035-c7db529a39b1
+
+	column postal_code
+		dataType: string
+		lineageTag: 9c9a9353-7e9a-41c2-bd7c-c4653989c2af
+		summarizeBy: none
+		sourceColumn: postal_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column city
+		dataType: string
+		lineageTag: b8e3a594-cc23-4be3-b4e9-f827e1bb6ce3
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column state
+		dataType: string
+		lineageTag: 38adf9e5-2130-4107-9130-fda784e67a47
+		summarizeBy: none
+		sourceColumn: state
+
+		annotation SummarizationSetBy = Automatic
+
+	column region
+		dataType: string
+		lineageTag: 8b81d94d-6435-4684-98b3-e4d1c4010768
+		summarizeBy: none
+		sourceColumn: region
+
+		annotation SummarizationSetBy = Automatic
+
+	column country
+		dataType: string
+		lineageTag: 975df559-abf4-429c-8056-7885355fbbe2
+		summarizeBy: none
+		sourceColumn: country
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_location = m
+		mode: import
+		source =
+				let
+				    Fonte = Odbc.DataSource("dsn=lev", [HierarchicalNavigation=true]),
+				    AwsDataCatalog_Database = Fonte{[Name="AwsDataCatalog",Kind="Database"]}[Data],
+				    default_Schema = AwsDataCatalog_Database{[Name="default",Kind="Schema"]}[Data],
+				    dim_location_Table = default_Schema{[Name="dim_location",Kind="Table"]}[Data]
+				in
+				    dim_location_Table
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,46 @@
+table dim_product
+	lineageTag: 5b71832a-9c98-4dd5-bc54-37b738f64de8
+
+	column product_id
+		dataType: string
+		lineageTag: 0c237050-4486-4b33-9741-e8171869aef8
+		summarizeBy: none
+		sourceColumn: product_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_name
+		dataType: string
+		lineageTag: 708b3d74-fa31-4ce9-b293-c5ec19c189d2
+		summarizeBy: none
+		sourceColumn: product_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column category
+		dataType: string
+		lineageTag: 22836e8d-cdb7-43f2-b0c0-b23dafcf6172
+		summarizeBy: none
+		sourceColumn: category
+
+		annotation SummarizationSetBy = Automatic
+
+	column sub_category
+		dataType: string
+		lineageTag: 69ee9aaf-d56f-43ef-848c-807f843d8486
+		summarizeBy: none
+		sourceColumn: sub_category
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_product = m
+		mode: import
+		source =
+				let
+				    Fonte = Odbc.DataSource("dsn=lev", [HierarchicalNavigation=true]),
+				    AwsDataCatalog_Database = Fonte{[Name="AwsDataCatalog",Kind="Database"]}[Data],
+				    default_Schema = AwsDataCatalog_Database{[Name="default",Kind="Schema"]}[Data],
+				    dim_product_Table = default_Schema{[Name="dim_product",Kind="Table"]}[Data]
+				in
+				    dim_product_Table
+
